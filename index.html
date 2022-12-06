@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Arret bus</title>
+		<style>
+			#demo {
+				font-family: "Helvetica", Arial, sans-serif;
+			}
+			a {
+				text-decoration: none;
+                
+				color: #f66;
+			}
+			li {
+				line-height: 1.5em;
+				margin-bottom: 20px;
+			}
+			.author,
+			.date {
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="demo">
+			<!-- <pre>{{commits}}</pre> -->
+			<h1>Bus transport</h1>
+			<template v-for="branch in branches">
+				<input
+					type="radio"
+					:id="type"
+					:value="type"
+					name="type"
+					v-model="currentBranch"
+				/>
+				<label :for="type">{{ type }}</label>
+			</template>
+			<p>vuejs/vue@{{ currenttype }}</p>
+			<ul>
+				<li v-for="donne in donnes">
+					
+					-
+					><br />
+					est la ligne numero
+					<span class="ligne"
+						><a :href="record.author.html_url" target="_blank"
+							></a
+						></span
+					>
+					dessert les arretes :
+					<span class="arrets"
+						>{{  }}</span
+					>
+				</li>
+			</ul>
+		</div>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/vue@3"></script>
+		<script>
+			const apiURL =
+				"https:/ /api/records/1.0/search/?dataset=244400404_tan-circuits&q=&facet=route_long_name&facet=route_type";
+			const config = {
+			};
+
+			Vue.createApp({
+				data() {
+					return {
+						donnes: null,
+						arrets: null,
+                        type: [bus, tram, ferry],
+                        currenttype : "bus",
+					};
+				},
+
+				created: function () {
+					this.fetchDataPromise();
+					// this.fetchDataAsync()
+				},
+
+				watch: {
+					currentBranch: "fetchDataPromise", //fetchDataAsync
+				},
+				methods: {
+					fetchDataPromise: function () {
+						const self = this;
+						axios
+							.get(apiURL + self.currenttype, config)
+							.then(function (response) {
+								console.log(response.data);
+								self.donnes = response.data;
+								// console.log(self.commits[0].html_url);
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+					},
+				},
+			}).mount("#demo");
+		</script>
+	</body>
+</html>
