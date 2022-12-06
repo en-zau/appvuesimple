@@ -17,8 +17,8 @@
 				line-height: 1.5em;
 				margin-bottom: 20px;
 			}
-			.author,
-			.date {
+			.arrets,
+			.ligne {
 				font-weight: bold;
 			}
 		</style>
@@ -27,13 +27,13 @@
 		<div id="demo">
 			<!-- <pre>{{commits}}</pre> -->
 			<h1>Bus transport</h1>
-			<template v-for="branch in branches">
+			<template v-for="type in types">
 				<input
 					type="radio"
 					:id="type"
 					:value="type"
 					name="type"
-					v-model="currentBranch"
+					v-model="currenttype"
 				/>
 				<label :for="type">{{ type }}</label>
 			</template>
@@ -45,13 +45,10 @@
 					><br />
 					est la ligne numero
 					<span class="ligne"
-						><a :href="record.author.html_url" target="_blank"
-							></a
-						></span
 					>
 					dessert les arretes :
 					<span class="arrets"
-						>{{  }}</span
+						>{{}}</span
 					>
 				</li>
 			</ul>
@@ -60,7 +57,7 @@
 		<script src="https://unpkg.com/vue@3"></script>
 		<script>
 			const apiURL =
-				"https:/ /api/records/1.0/search/?dataset=244400404_tan-circuits&q=&facet=route_long_name&facet=route_type";
+				"https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_tan-circuits&q=&rows=15&facet=route_long_name&facet=route_type";
 			const config = {
 			};
 
@@ -69,7 +66,7 @@
 					return {
 						donnes: null,
 						arrets: null,
-                        type: [bus, tram, ferry],
+                        types: ["bus", "tram", "ferry"],
                         currenttype : "bus",
 					};
 				},
@@ -86,7 +83,7 @@
 					fetchDataPromise: function () {
 						const self = this;
 						axios
-							.get(apiURL + self.currenttype, config)
+							.get(apiURL)
 							.then(function (response) {
 								console.log(response.data);
 								self.donnes = response.data;
